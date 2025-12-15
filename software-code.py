@@ -17,7 +17,7 @@ tela.geometry("500x500")
 #tela.state('zoomed')
 tela.title("Produto educacional")
 
-
+#TESTE DE ALTERAÇÃO
 # função linear: y = a*x + b
 def func_linear(x, a, b):
     """Função linear para ajuste."""
