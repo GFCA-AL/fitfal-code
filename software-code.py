@@ -13,16 +13,16 @@ from scipy.optimize import curve_fit
 #COMPONENTES DA TELA INICIAL
 
 tela = Tk()
-is_fullscreen = False
+"""is_fullscreen = False
 def toggle_fullscreen(event=None):
     global is_fullscreen
     is_fullscreen = not is_fullscreen
     tela.attributes('-fullscreen', is_fullscreen)
 
 tela.bind('<F11>', toggle_fullscreen)
-tela.bind('<Escape>', lambda e: tela.attributes('-fullscreen', False))
-# tela.geometry("700x700")
-#tela.state('zoomed')
+tela.bind('<Escape>', lambda e: tela.attributes('-fullscreen', False))"""
+#tela.geometry("700x1200")
+tela.state('zoomed')
 tela.title("Produto educacional")
 
 #TESTE DE ALTERAÇÃO
@@ -82,30 +82,42 @@ def arquivo(a):
         plt.grid(True)
         plt.show()
 
-    else:
+    else:     
         messagebox.showwarning("Seleção Cancelada", "Nenhum arquivo selecionado.")
+
+frame_moldura = Canvas(tela, bg="lightblue", bd=4, relief="groove", highlightthickness=0)
+frame_moldura.pack(fill=BOTH, expand=True)
+frame_moldura.create_rectangle(400, 10, 1150, 750, outline="red", width=4)
             
-lb1=Label(tela, text="Selecione a quantidade de curvas no gráfico", font=("Fixedsys", 12), fg="black", width=50, height=3)
-lista1=["1","2","3","4"]
-cb1=ttk.Combobox(tela, values=lista1, font=("Fixedsys", 12), width=5, height=10)
+lb1=Label(frame_moldura, text="Selecione a quantidade de curvas no gráfico", font=("Fixedsys", 12), fg="black", width=50, height=3, bd=2, bg="lightblue")
+lista1=["1"]
+cb1=ttk.Combobox(frame_moldura, values=lista1, font=("Fixedsys", 12), width=5, height=10)
 cb1.set("1")
-lb=Label(tela, text="Selecione o tipo de ajuste (fit)", font=("Fixedsys", 12), fg="black", width=50, height=3)
+lb=Label(frame_moldura, text="Selecione o tipo de ajuste (fit)", font=("Fixedsys", 12), fg="black", width=50, height=3,  bg="lightblue")
 lista2=["Linear","Polinomial grau 2"]
-cb=ttk.Combobox(tela, values=lista2, font=("Fixedsys", 12), width=20, height=10)
+cb=ttk.Combobox(frame_moldura, values=lista2, font=("Fixedsys", 12), width=20, height=10)
 cb.set("Linear")
-lb2=Label(tela, text="Quais os eixos que foram medidos várias vezes?", font=("Fixedsys", 12), fg="black", width=50, height=3)
+lb2=Label(frame_moldura, text="Quais os eixos que foram medidos várias vezes?", font=("Fixedsys", 12), fg="black", width=50, height=3, bg="lightblue")
 lista3=["Apenas x","Apenas y", "Ambos"]
-cb2=ttk.Combobox(tela, values=lista3, font=("Fixedsys", 12), width=10, height=10)
+cb2=ttk.Combobox(frame_moldura, values=lista3, font=("Fixedsys", 12), width=10, height=10)
 cb2.set("Apenas x")
-lb3=Label(tela, text="Qual o rótulo do eixo x?", font=("Fixedsys", 12), fg="black", width=50, height=3)
-cx1= Entry(tela)
-lb3_1=Label(tela, text="E sua sigla?", font=("Fixedsys", 12), fg="black", width=50, height=3)
-cx1_1= Entry(tela)
-lb4=Label(tela, text="Qual o rótulo do eixo y?", font=("Fixedsys", 12), fg="black", width=50, height=3)
-cx2= Entry(tela)
-lb4_1=Label(tela, text="E sua sigla?", font=("Fixedsys", 12), fg="black", width=50, height=3)
-cx2_1= Entry(tela)
-botaofit= Button(tela, text="Escolher arquivo",bg="green",fg="white",width=20, height=2, font=("Fixedsys", 9), command= lambda: arquivo(1))
+lb3=Label(frame_moldura, text="Qual o rótulo do eixo x?", font=("Fixedsys", 12), fg="black", width=50, height=3, bg="lightblue")
+cx1= Entry(frame_moldura)
+lb4=Label(frame_moldura, text="Qual o rótulo do eixo y?", font=("Fixedsys", 12), fg="black", width=50, height=3, bg="lightblue")
+cx2= Entry(frame_moldura)
+lb3_1=Label(frame_moldura, text="E sua sigla?", font=("Fixedsys", 12), fg="black", width=50, height=3, bg="lightblue")
+cx1_1= Entry(frame_moldura)
+lb4_1=Label(frame_moldura, text="E sua sigla?", font=("Fixedsys", 12), fg="black", width=50, height=3, bg="lightblue")
+cx2_1= Entry(frame_moldura)
+lb5_1=Label(frame_moldura, text="Quantos pontos no gráfico?", font=("Fixedsys", 12), fg="black", width=50, height=3, bg="lightblue")
+lista4=["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+cb4=ttk.Combobox(tela, values=lista4, font=("Fixedsys", 12), width=5, height=10)
+cb4.set("1")
+lb6_1=Label(frame_moldura, text="Quantas medidas foram feitas?", font=("Fixedsys", 12), fg="black", width=50, height=3, bg="lightblue")
+lista4=["1", "2", "3", "4", "5"]
+cb5=ttk.Combobox(frame_moldura, values=lista4, font=("Fixedsys", 12), width=5, height=10)
+cb5.set("1")
+botaofit= Button(frame_moldura, text="Inserir dados experimentais",bg="green",fg="white",width=50, height=2, font=("Fixedsys", 9), command= lambda: arquivo(1))
 
 #Posicionamento dos componentes da tela 3:
 lb1.pack()
@@ -114,16 +126,22 @@ lb.pack()
 cb.pack()
 lb2.pack()
 cb2.pack()
-lb3.pack()
-cx1.pack()
-lb3_1.pack()
-cx1_1.pack()
-lb4.pack()
-cx2.pack()
-lb4_1.pack()
-cx2_1.pack()
+lb3.place(x=440, y=250)
+cx1.place(x=580, y=300)
+lb4.place(x=440, y=350)
+cx2.place(x=580, y=400)
 
-botaofit.pack(padx=0, pady=10)
+lb3_1.place(x=740, y=250)
+cx1_1.place(x=880, y=300)
+lb4_1.place(x=740, y=350)
+cx2_1.place(x=880, y=400)
+
+lb5_1.place(x=590, y=500)
+cb4.place(x=760, y=550)
+lb6_1.place(x=590, y=630)
+cb5.place(x=760, y=680)
+
+botaofit.place(x=595, y=770)
 
 
 tela.mainloop()
