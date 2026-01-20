@@ -32,13 +32,84 @@ def func_linear(x, a, b):
     return a * x + b
     #return a*x**2 + b*x + c
 
+"""global receber
 
+def recebimento():
+    global receber
+    receber=cb.get()
+    pontos = int(receber)
+"""
+
+#tela 2 - configurações iniciais
+def arquivo(a):
+    if a==1:
+
+        #recebimento das variaveis da tela 1:
+
+        global recebersiglay
+        global recebersiglax
+        global receber
+        global receber2
+        global receberrotuloy
+        global receberrotulox
+        global eixorepetido
+        
+        eixorepetido = cb2.get()
+        recebersiglay=cx2_1
+        recebersiglax=cx1_1
+        receber2=cb5.get()
+        receber=cb4.get()
+        receberrotuloy= cx2.get()
+        receberrotulox= cx1.get()
+        pontos = int(receber)
+        pontos2 = int(receber2)
+    
+        #componentes da tela 2
+        tela2=Tk()
+        tela2.title("INSIRA OS DADOS DO EXPERIMENTO")
+        tela2.state("zoomed")
+        #textofinalrotulo1 = f"{receberrotuloy} {recebersiglay}"
+        lbl_id = Label(tela2, text= receberrotuloy, font=("Arial", 10, "bold"), fg="blue")
+        lbl_id.place(x=0, y=0)
+
+        lbl_id2 = Label(tela2, text=receberrotulox, font=("Arial", 10, "bold"), fg="blue")
+        lbl_id2.grid(row=0, column=3, columnspan=1, pady=(5, 5))
+
+        botaogerador= Button(tela2, text="GERAR GRAFICO", command= lambda: gerador(a))
+        botaogerador.place(x=0, y=600)
+        
+        #criaçao das caixas de textos para a inserção de dados:
+        for l in range(pontos):
+            for c in range(pontos2 + 1):
+                caixa = Entry(tela2, width=10)
+                #espaco_x = 2
+                if c == 0:
+                    padding_personalizado = (4, 100) 
+                else:
+                    padding_personalizado = 4
+            
+                caixa.grid(row=l + 1, column=c, padx=padding_personalizado, pady=10)
+                #caixa.insert(0, f"linha{l} coluna{c}")
+
+        #troca de rotulos na tela2 ao mudar a opção da variavel que foi medida varias vezes:
+        if eixorepetido == "Apenas y":
+            lbl_id = Label(tela2, text= receberrotulox, font=("Arial", 10, "bold"), fg="blue")
+            lbl_id.place(x=0, y=0)
+
+            lbl_id2 = Label(tela2, text=receberrotuloy, font=("Arial", 10, "bold"), fg="blue")
+            lbl_id2.grid(row=0, column=3, columnspan=1, pady=(5, 5))
+
+
+        #botao11.pack()
+
+
+"""
 def arquivo(a):
     if a==1:
         receber=cb.get()
         if receber=="Linear":
             
-            """Abre a janela de seleção de arquivo e exibe o caminho escolhido."""
+            Abre a janela de seleção de arquivo e exibe o caminho escolhido.
     caminho_arquivo = filedialog.askopenfilename(
         title="Selecione um Arquivo",
         filetypes=(("Arquivo de Dados", "*.dat"),("Arquivos de Texto", "*.txt"), ("Todos os Arquivos", "*.*"))
@@ -85,6 +156,7 @@ def arquivo(a):
     else:     
         messagebox.showwarning("Seleção Cancelada", "Nenhum arquivo selecionado.")
 
+"""
 frame_moldura = Canvas(tela, bg="lightblue", bd=4, relief="groove", highlightthickness=0)
 frame_moldura.pack(fill=BOTH, expand=True)
 frame_moldura.create_rectangle(400, 10, 1150, 750, outline="red", width=4)
