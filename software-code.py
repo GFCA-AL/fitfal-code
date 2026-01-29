@@ -75,7 +75,7 @@ def arquivo(a):
         lbl_id2 = Label(tela2, text=receberrotulox, font=("Arial", 10, "bold"), fg="blue")
         lbl_id2.grid(row=0, column=3, columnspan=1, pady=(5, 5))
 
-        botaogerador= Button(tela2, text="GERAR GRAFICO", command= lambda: gerador(a))
+        botaogerador= Button(tela2, text="GERAR GRAFICO", command= lambda: gerador(1))
         botaogerador.place(x=0, y=600)
         
         #criaçao das caixas de textos para a inserção de dados:
@@ -89,15 +89,32 @@ def arquivo(a):
                     padding_personalizado = 4
             
                 caixa.grid(row=l + 1, column=c, padx=padding_personalizado, pady=10)
+
+                
                 #caixa.insert(0, f"linha{l} coluna{c}")
 
-        #troca de rotulos na tela2 ao mudar a opção da variavel que foi medida varias vezes:
+        #troca os rotulos na tela2 ao mudar a opção da variavel que foi medida varias vezes na tela1:
         if eixorepetido == "Apenas y":
             lbl_id = Label(tela2, text= receberrotulox, font=("Arial", 10, "bold"), fg="blue")
             lbl_id.place(x=0, y=0)
 
             lbl_id2 = Label(tela2, text=receberrotuloy, font=("Arial", 10, "bold"), fg="blue")
             lbl_id2.grid(row=0, column=3, columnspan=1, pady=(5, 5))
+
+    lista_entries = []
+        
+    def gerador(b):
+        if b==1:
+            lista_entries.append(caixa)
+            def coletar_dados():
+
+                dados = [entrada.get() for entrada in lista_entries]
+                lbldados = Label(tela2, text=dados, font=("Arial", 10, "bold"), fg="blue")
+                lbldados.place(x=0, y=500)
+                print("Dados coletados:", dados)
+
+
+
 
 
         #botao11.pack()
