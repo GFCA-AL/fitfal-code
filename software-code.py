@@ -63,6 +63,8 @@ def arquivo(a):
         receberrotulox= cx1.get()
         pontos = int(receber)
         pontos2 = int(receber2)
+
+
     
         #componentes da tela 2
         tela2=Tk()
@@ -75,7 +77,7 @@ def arquivo(a):
         lbl_id2 = Label(tela2, text=receberrotulox, font=("Arial", 10, "bold"), fg="blue")
         lbl_id2.grid(row=0, column=3, columnspan=1, pady=(5, 5))
 
-        botaogerador= Button(tela2, text="GERAR GRAFICO", command= lambda: gerador(1))
+        botaogerador= Button(tela2, text="GERAR GRAFICO", command= lambda: gerador(cb.get()))
         botaogerador.place(x=0, y=600)
         
         #criaçao das caixas de textos para a inserção de dados:
@@ -102,22 +104,85 @@ def arquivo(a):
             lbl_id2.grid(row=0, column=3, columnspan=1, pady=(5, 5))
 
     lista_entries = []
-        
-    def gerador(b):
-        if b==1:
-            lista_entries.append(caixa)
-            def coletar_dados():
 
+    # Criação das caixas de textos para a inserção de dados:
+    for l in range(pontos):
+        for c in range(pontos2 + 1):
+            caixa = Entry(tela2, width=10)
+            if c == 0:
+                padding_personalizado = (4, 100)
+            else:
+                padding_personalizado = 4
+
+            caixa.grid(row=l + 1, column=c, padx=padding_personalizado, pady=10)
+            lista_entries.append(caixa)  # Adiciona CADA Entry à lista
+
+    # Função gerador dentro do escopo correto
+    def gerador(b):
+
+        #Caso Linear seja selecionado fazemos o ajuste linear
+        if b == "Linear":
+            def coletar_dados():
                 dados = [entrada.get() for entrada in lista_entries]
                 lbldados = Label(tela2, text=dados, font=("Arial", 10, "bold"), fg="blue")
                 lbldados.place(x=0, y=500)
-                print("Dados coletados:", dados)
+
+                #separar os dados em medidas simples e medidas repetidas
+                eixomedidas=[]
+                eixosimples = []
+                for i in range(len(dados)):
+                    if i % (pontos2 + 1) == 0:
+                        eixosimples.append(float(dados[i]))
+                    else:
+                        eixomedidas.append(float(dados[i]))
+
+                # Converter para array numpy e redimensionar
+                eixomedidas_array = np.array(eixomedidas).reshape(pontos, pontos2)
+
+                # Calcular média e desvio padrão ao longo de cada linha
+                eixomedidas_media = np.mean(eixomedidas_array, axis=1)
+                eixomedidas_desvio = np.std(eixomedidas_array, axis=1)
+
+                # print("Eixo com medida única:", eixosimples)
+                # print("Eixo com várias medidas (original):", eixomedidas)
+                # print("Eixo com médias calculadas:", eixomedidas_media)
+                # print("Desvio padrão de cada grupo:", eixomedidas_desvio)
+                # print("Dados coletados:", dados)
+
+                #Parametros do ajuste linear usando desvio padrão
+                params, pcov = curve_fit(func_linear, eixosimples, eixomedidas_media, sigma=eixomedidas_desvio)
+                a, b = params
+                perr = np.sqrt(np.diag(pcov))
+
+                #Impressão dos parâmetros do ajuste
+                print(f"Parâmetros do ajuste:")
+                print(f"  - Coeficiente angular (a): {a:.4f} +/- {perr[0]:.4f}")
+                print(f"  - Coeficiente linear (b): {b:.4f} +/- {perr[1]:.4f}")
+                # print(f"  - Coeficiente (c): {c:.4f} +/- {perr[1]:.4f}")
+
+                #Curva de ajuste linear
+                x_fit = np.linspace(min(eixosimples), max(eixosimples), 200)
+                y_fit = func_linear(x_fit, a, b)
+
+                #Geracao da figura com os pontos medidos e a curva de ajuste
+                plt.figure(figsize=(8, 6))
+                plt.errorbar(eixosimples, eixomedidas_media, xerr=eixomedidas_desvio, fmt='o', capsize=4)
+                plt.plot(x_fit, y_fit, '-', label=f'Ajuste linear: {cx2_1.get()} = {a:.2f}{cx1_1.get()} + {b:.2f}')
+
+                plt.title('Ajuste Linear com Desvio Padrão')
+                plt.xlabel(cx1.get())
+                plt.ylabel(cx2.get())
+                plt.legend()
+                plt.grid(True)
+                plt.show()
+
+            coletar_dados()
 
 
 
 
 
-        #botao11.pack()
+            #botao11.pack()
 
 
 """
