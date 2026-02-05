@@ -7,6 +7,7 @@ from tkinter import filedialog, messagebox
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
+from scipy import optimize
 
 #import tkinter as tk
 
@@ -32,6 +33,10 @@ def func_linear(x, a, b):
     return a * x + b
     #return a*x**2 + b*x + c
 
+def func_poli(x, a, b, c):
+    """Função polinomial de segundo grau para ajuste."""
+    return a*x**2 + b*x + c
+   
 """global receber
 
 def recebimento():
@@ -178,9 +183,56 @@ def arquivo(a):
 
             coletar_dados()
 
+        if b == "Polinomial grau 2":
+                    def coletar_dados():
+                        dados = [entrada.get() for entrada in lista_entries]
+                        lbldados = Label(tela2, text=dados, font=("Arial", 10, "bold"), fg="blue")
+                        lbldados.place(x=0, y=500)
+
+                        eixomedidas=[]
+                        eixosimples = []
+                        for i in range(len(dados)):
+                            if i % (pontos2 + 1) == 0:
+                                eixosimples.append(float(dados[i]))
+                            else:
+                                eixomedidas.append(float(dados[i]))
+
+                        # Converter para array numpy e redimensionar
+                        eixomedidas_array = np.array(eixomedidas).reshape(pontos, pontos2)
+
+                        # Calcular média e desvio padrão ao longo de cada linha
+                        eixomedidas_media = np.mean(eixomedidas_array, axis=1)
+                        eixomedidas_desvio = np.std(eixomedidas_array, axis=1)
 
 
+                        #Parametros do ajuste linear usando desvio padrão
+                        params, pcov = curve_fit(func_poli, eixosimples, eixomedidas_media, sigma=eixomedidas_desvio, p0=[1, 0.01, 0.01])
+                        a, b, c = params
+                        perr = np.sqrt(np.diag(pcov))
 
+                        #Impressão dos parâmetros do ajuste
+                        print(f"Parâmetros do ajuste:")
+                        print(f"  - Coeficiente angular (a): {a:.4f} +/- {perr[0]:.4f}")
+                        print(f"  - Coeficiente linear (b): {b:.4f} +/- {perr[1]:.4f}")
+                        print(f"  - Coeficiente (c): {c:.4f} +/- {perr[1]:.4f}")
+
+                        #Curva de ajuste linear
+                        x_fit = np.linspace(min(eixosimples), max(eixosimples), 200)
+                        y_fit = func_poli(x_fit, a, b, c)
+
+                        #Geracao da figura com os pontos medidos e a curva de ajuste
+                        plt.figure(figsize=(8, 6))
+                        plt.errorbar(eixosimples, eixomedidas_media, xerr=eixomedidas_desvio, fmt='o', capsize=4)
+                        plt.plot(x_fit, y_fit, '-', label=f'Ajuste polinomial de segundo grau: {cx2_1.get()} = {a:.2f}{cx1_1.get()}**2 + {b:.2f}{cx1_1.get()} + {c:.2f}')
+
+                        plt.title('Ajuste polinomial de segundo grau com desvio Padrão')
+                        plt.xlabel(cx1.get())
+                        plt.ylabel(cx2.get())
+                        plt.legend()
+                        plt.grid(True)
+                        plt.show()
+
+                    coletar_dados()
 
             #botao11.pack()
 
