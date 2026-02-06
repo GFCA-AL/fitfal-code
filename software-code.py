@@ -44,6 +44,9 @@ def recebimento():
     receber=cb.get()
     pontos = int(receber)
 """
+def func_seno(x, a, b, c, d):
+    return a * np.sin(b * x + c) + d
+
 
 #tela 2 - configurações iniciais
 def arquivo(a):
@@ -234,6 +237,61 @@ def arquivo(a):
 
                     coletar_dados()
 
+        if b == "Função seno":
+                    def coletar_dados():
+                        dados = [entrada.get() for entrada in lista_entries]
+                        lbldados = Label(tela2, text=dados, font=("Arial", 10, "bold"), fg="blue")
+                        lbldados.place(x=0, y=500)
+
+                        eixomedidas=[]
+                        eixosimples = []
+                        for i in range(len(dados)):
+                            if i % (pontos2 + 1) == 0:
+                                eixosimples.append(float(dados[i]))
+                            else:
+                                eixomedidas.append(float(dados[i]))
+
+                        # Converter para array numpy e redimensionar
+                        eixomedidas_array = np.array(eixomedidas).reshape(pontos, pontos2)
+
+                        # Calcular média e desvio padrão ao longo de cada linha
+                        eixomedidas_media = np.mean(eixomedidas_array, axis=1)
+                        eixomedidas_desvio = np.std(eixomedidas_array, axis=1)
+
+
+                        # a: amplitude, b: frequência, c: fase, d: deslocamento vertical
+                        chute_inicial = [np.std(eixomedidas_media) * 2, 0.05, 0.0, np.mean(eixomedidas_media)]
+                        params, _ = curve_fit(func_seno, eixosimples, eixomedidas_media,p0=chute_inicial) 
+                        #x_fit = np.linspace(min(eixosimples), max(eixosimples), 10)
+                        #y_fit = func_seno(x_fit, a, b, c, d)
+                        x_curva = np.linspace(min(eixosimples), max(eixosimples), 500)
+                        y_curva = func_seno(x_curva, *params)
+
+                        # 3. Chute inicial (p0) - Ajuda o algoritmo a convergir
+                        # Estimamos: amplitude pela metade da variação e offset pela média
+                        
+
+                        # 4. Executar o ajuste
+                       
+
+                        # 5. Criar pontos para uma linha suave no gráfico
+
+
+                        # 6. Plotagem
+                        plt.figure(figsize=(8, 5))
+                        plt.scatter(eixosimples, eixomedidas_media, color='red', label='Dados Originais (Listas)')
+                        plt.plot(x_curva, y_curva, label='Ajuste Senoidal', color='blue', linewidth=2)
+                        plt.legend()
+                        plt.grid(True)
+                        plt.show()  
+
+    
+                        #plt.show()
+
+                    coletar_dados()
+
+
+
             #botao11.pack()
 
 
@@ -300,7 +358,7 @@ lista1=["1"]
 cb1=ttk.Combobox(frame_moldura, values=lista1, font=("Fixedsys", 12), width=5, height=10)
 cb1.set("1")
 lb=Label(frame_moldura, text="Selecione o tipo de ajuste (fit)", font=("Fixedsys", 12), fg="black", width=50, height=3,  bg="lightblue")
-lista2=["Linear","Polinomial grau 2"]
+lista2=["Linear","Polinomial grau 2", "Função seno"]
 cb=ttk.Combobox(frame_moldura, values=lista2, font=("Fixedsys", 12), width=20, height=10)
 cb.set("Linear")
 lb2=Label(frame_moldura, text="Quais os eixos que foram medidos várias vezes?", font=("Fixedsys", 12), fg="black", width=50, height=3, bg="lightblue")
